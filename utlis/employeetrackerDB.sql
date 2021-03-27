@@ -1,4 +1,6 @@
--- command used to create db and its table
+-- reference file for db commands, not meant to be run
+
+-- commands used to create db and its tables
 
 CREATE DATABASE employee_db;
 
@@ -33,8 +35,8 @@ INSERT INTO department (name) VALUES (?);
 
 -- example command to add to the role table
 
-INSERT INTO department (title, salary, department_id) VALUES (?, ?, ?);
+INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?);
 
 -- example command to add to the employee table
 
-INSERT INTO department (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?);
+INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?);
