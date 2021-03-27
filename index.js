@@ -24,6 +24,16 @@ connection.connect((err) => {
 
 function init() {
     //ask user what to do (add data, update data, view data, exit program)
+    inquirer.prompt([
+        {
+            message: "What action do you wish to take?",
+            type: "list",
+            name: "action",
+            choices: ["Add New Data", "Update Existing Data", "View Data", "Exit"]
+        }
+    ])
+    .then (console.log(response))
+    console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
     //add data
         //ask which table to add data to
         //collect needed info
