@@ -4,6 +4,7 @@ const inquirer = require("inquirer");
 const viewEmployees = require('./utlis/viewDataFunctions/viewEmployess')
 const viewRoles = require('./utlis/viewDataFunctions/viewRoles')
 const viewDepartments = require('./utlis/viewDataFunctions/viewDepartments')
+const addData = require('./utlis/addData')
 
 //defines details of connection 
 const connection = mysql.createConnection({
@@ -22,7 +23,7 @@ connection.connect((err) => {
     init();
 });
 
-function init() {
+const init = function() {
     //ask user what to do (add data, update data, view data, exit program)
 
     inquirer.prompt([{
@@ -35,16 +36,17 @@ function init() {
             "View Data",
             "Exit the Program"
         ]
-    }]).then(function (response) {
+    }]).then(async function (response) {
         switch (response.action) {
             case "Add New Data":
-                addData();
+                await addData(connection);
+                init();
                 break;
             case "Update Existing Data":
-                updateData();
+                //updateData();
                 break;
             case "View Data":
-                viewData();
+                //viewData();
                 break;
             default:
                 connection.end();
@@ -56,17 +58,17 @@ function init() {
     //ask which table to add data to
     //collect needed info
     //execute sql command to add data to table 
-    //init()
+    //initialization()
     //update data
     //ask what you want to update
     //collect info w/ inquirer
     //execute sql command to update data
-    //init()
+    //initialization()
     //view data
     //ask which table to view
     //get data from db
     //console.table(data)
-    //init()
+    //initialization()
     //exit
     //close out connection 
     //end program
