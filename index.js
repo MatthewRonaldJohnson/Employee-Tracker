@@ -1,10 +1,8 @@
 //pulling in requires packages and ulti files
 const mysql = require('mysql');
 const inquirer = require("inquirer");
-const viewEmployees = require('./utlis/viewDataFunctions/viewEmployess')
-const viewRoles = require('./utlis/viewDataFunctions/viewRoles')
-const viewDepartments = require('./utlis/viewDataFunctions/viewDepartments')
 const addData = require('./utlis/addData')
+const viewData = require('./utlis/viewData')
 
 //defines details of connection 
 const connection = mysql.createConnection({
@@ -46,7 +44,8 @@ const init = function() {
                 //updateData();
                 break;
             case "View Data":
-                //viewData();
+                await viewData(connection);
+                init();
                 break;
             default:
                 connection.end();
