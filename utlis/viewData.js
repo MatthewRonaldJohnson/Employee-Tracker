@@ -14,7 +14,7 @@ const viewData = async function (connection) {
     }]).then(function (response) { //init runs before th console.table, convert this to promises to use async await?
         switch (response.table) {
             case 'Department':
-                connection.query("SELECT * FROM department", async function (err, data) {
+                connection.query("SELECT * FROM department",function (err, data) {
                     console.table(data);
                 })
                 break;
