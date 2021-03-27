@@ -45,7 +45,7 @@ const init = function() {
                 break;
             case "View Data":
                 await viewData(connection);
-                init();
+                init(); //this is being called before the console.table is executed
                 break;
             default:
                 connection.end();

@@ -16,6 +16,7 @@ const viewData = async function (connection) {
             case 'Department':
                 connection.query("SELECT * FROM department",function (err, data) {
                     console.table(data);
+                    //init(); want to be able to call init here
                 })
                 break;
             case 'Role':
