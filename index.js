@@ -24,32 +24,50 @@ connection.connect((err) => {
 
 function init() {
     //ask user what to do (add data, update data, view data, exit program)
-    inquirer.prompt([
-        {
-            message: "What action do you wish to take?",
-            type: "list",
-            name: "action",
-            choices: ["Add New Data", "Update Existing Data", "View Data", "Exit"]
+
+    inquirer.prompt([{
+        type: "list",
+        name: "action",
+        message: "Which action would you like to take?",
+        choices: [
+            "Add New Data",
+            "Update Existing Data",
+            "View Data",
+            "Exit the Program"
+        ]
+    }]).then(function (response) {
+        switch (response.action) {
+            case "Add New Data":
+                addData();
+                break;
+            case "Update Existing Data":
+                updateData();
+                break;
+            case "View Data":
+                viewData();
+                break;
+            default:
+                connection.end();
+                break;
         }
-    ])
-    .then (console.log(response))
-    console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+    })
+
     //add data
-        //ask which table to add data to
-        //collect needed info
-        //execute sql command to add data to table 
-        //init()
+    //ask which table to add data to
+    //collect needed info
+    //execute sql command to add data to table 
+    //init()
     //update data
-        //ask what you want to update
-        //collect info w/ inquirer
-        //execute sql command to update data
-        //init()
+    //ask what you want to update
+    //collect info w/ inquirer
+    //execute sql command to update data
+    //init()
     //view data
-        //ask which table to view
-        //get data from db
-        //console.table(data)
-        //init()
+    //ask which table to view
+    //get data from db
+    //console.table(data)
+    //init()
     //exit
-        //close out connection 
-        //end program
+    //close out connection 
+    //end program
 }
