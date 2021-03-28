@@ -17,13 +17,10 @@ const connection = mysql.createConnection({
 connection.connect((err) => {
     if (err) throw err;
     console.log(`connected as id ${connection.threadId}`);
-
     init();
 });
 
-const init = function() {
-    //ask user what to do (add data, update data, view data, exit program)
-
+const init = function () {
     inquirer.prompt([{
         type: "list",
         name: "action",
