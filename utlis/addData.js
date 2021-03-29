@@ -102,6 +102,7 @@ const addData = async function (connection) {
                     await connection.query("SELECT CONCAT(first_name, ' ', last_name) AS name, id FROM employee;")
                         .then((data) => {
                             employeeQ[3].choices = data.map(element => element.name);
+                            employeeQ[3].choices.push('NULL')
                             employeeData = data;
                         })
                     await inquirer.prompt(employeeQ)
