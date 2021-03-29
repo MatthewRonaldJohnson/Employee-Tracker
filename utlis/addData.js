@@ -1,6 +1,8 @@
 const inquirer = require("inquirer");
 const cTable = require('console.table');
 
+const findId = require('./findId')
+
 const departmentQ = [{
     type: 'input',
     message: 'What is the name of the department?',
@@ -77,17 +79,12 @@ const addData = async function (connection) {
                     let departmentData;
                     await connection.query("SELECT * FROM department;")
                         .then((data) => {
-                            const departmentNames = [];
-                            data.forEach(element => departmentNames.push(element.name));
-                            roleQ[2].choices = departmentNames;
+                            roleQ[2].choices = data.map(element => element.name)
                             departmentData = data;
                         })
                     await inquirer.prompt(roleQ)
                         .then(async (response) => {
-                            let department_id;
-                            for (let i = 0; i < departmentData.length; i++) {
-                                if (departmentData[i].name === response.department) department_id = departmentData[i].id;
-                            }
+                            let department_id = findId(departmentData, 'name', response.department);
                             const query = "INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?);";
                             await connection.query(query, [response.title, response.salary, department_id]);
                             console.log(response.title + " role added to database");
@@ -99,28 +96,18 @@ const addData = async function (connection) {
                     let employeeData;
                     await connection.query("SELECT title, id FROM role;")
                         .then((data) => {
-                            const roleTitles = [];
-                            data.forEach(element => roleTitles.push(element.title));
-                            employeeQ[2].choices = roleTitles;
+                            employeeQ[2].choices = data.map(element => element.title);
                             roleData = data;
                         })
                     await connection.query("SELECT CONCAT(first_name, ' ', last_name) AS name, id FROM employee;")
                         .then((data) => {
-                            let employeesList = [];
-                            data.forEach(element => employeesList.push(element.name));
-                            employeeQ[3].choices = employeesList;
+                            employeeQ[3].choices = data.map(element => element.name);
                             employeeData = data;
                         })
                     await inquirer.prompt(employeeQ)
                         .then(async (response) => {
-                            let role_id;
-                            for (let i = 0; i < roleData.length; i++) {
-                                if (roleData[i].title === response.role) role_id = roleData[i].id;
-                            }
-                            let manager_id;
-                            for (let i = 0; i < employeeData.length; i++) {
-                                if (employeeData[i].name === response.manager) manager_id = employeeData[i].id;
-                            }
+                            let role_id = findId(roleData, 'title', response.role);
+                            let manager_id = findId(employeeData, 'name', response.manager);
                             const query = "INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?);";
                             await connection.query(query, [response.first_name, response.last_name, role_id, manager_id]);
                             console.log(`${response.first_name} ${response.last_name} added to employee database`);

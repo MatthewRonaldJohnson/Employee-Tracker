@@ -2,6 +2,7 @@ const inquirer = require("inquirer");
 
 const addData = require('./utlis/addData')
 const viewData = require('./utlis/viewData')
+const updateData = require('./utlis/updateData')
 
 const connection = require('./utlis/connection')
 
@@ -25,8 +26,8 @@ const init = function () {
                 init();
                 break;
             case "Update Existing Data":
-                //updateData();
-                //init();
+                await updateData(connection);
+                init();
                 break;
             case "View Data":
                 await viewData(connection);
