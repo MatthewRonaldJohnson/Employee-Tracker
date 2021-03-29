@@ -28,7 +28,7 @@ const updateData = async function (connection) {
                 let employeeData;
                 let roleData;
                 let target;
-                await connection.query("SELECT CONCAT(first_name, last_name) as name, title, employee.id from employee left join role on employee.role_id = role.id;")
+                await connection.query("SELECT CONCAT(first_name, ' ', last_name) as name, title, employee.id from employee left join role on employee.role_id = role.id;")
                     .then((data) => {
                         employeeQ[0].choices = data.map(element => element.name);
                         employeeData = data;
