@@ -14,19 +14,19 @@ const viewData = async function (connection) {
     }]).then(async function (response) {
         switch (response.table) {
             case 'Department':
-                await connection.query("SELECT * FROM department")
+                await connection.query("SELECT name as department FROM department")
                 .then((data) => console.table(data))
                 break;
             case 'Role':
-                await connection.query("SELECT title, salary, name AS department from role left join department on role.department_id = department.id;")
+                await connection.query("SELECT title, salary, name AS department from role left join department on role.department_id = department.id ORDER BY DEPARTMENT;")
                 .then((data) => console.table(data))
                 break;
             case 'Employee':
-                await connection.query(`SELECT e.id, e.last_name, e.first_name, title, name AS department, salary, CONCAT (m.first_name, " ", m.last_name) as manager
+                await connection.query(`SELECT e.last_name, e.first_name, title, name AS department, salary, CONCAT (m.first_name, " ", m.last_name) as manager
                 FROM employee e
                 LEFT JOIN role ON e.role_id = role.id
                 LEFT JOIN department ON role.department_id = department.id
-                LEFT JOIN employee m ON e.manager_id = m.id;`)
+                LEFT JOIN employee m ON e.manager_id = m.id ORDER BY department;`)
                 .then((data) => console.table(data))
                 break;
         }

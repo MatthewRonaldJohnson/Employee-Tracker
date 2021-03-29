@@ -6,7 +6,7 @@ const findId = require('./findId')
 const departmentQ = [{
     type: 'input',
     message: 'What is the name of the department?',
-    name: 'name'
+    name: 'name' //add a validate?
 }]
 
 const roleQ = [
