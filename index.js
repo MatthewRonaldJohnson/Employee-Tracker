@@ -7,8 +7,8 @@ const updateData = require('./utlis/updateData')
 const connection = require('./utlis/connection')
 
 
-const init = function () {
-    inquirer.prompt([{
+const init = async function () {
+    const { action } = await inquirer.prompt([{
         type: "list",
         name: "action",
         message: "Which action would you like to take?",
@@ -19,25 +19,24 @@ const init = function () {
             "Exit the Program"
         ]
     }])
-    .then(async function (response) {
-        switch (response.action) {
-            case "Add New Data":
-                await addData(connection);
-                init();
-                break;
-            case "Update Existing Data":
-                await updateData(connection);
-                init();
-                break;
-            case "View Data":
-                await viewData(connection);
-                init();
-                break;
-            default:
-                connection.end();
-                break;
-        }
-    })
+    switch (action) {
+        case "Add New Data":
+            await addData(connection);
+            init();
+            break;
+        case "Update Existing Data":
+            await updateData(connection);
+            init();
+            break;
+        case "View Data":
+            await viewData(connection);
+            init();
+            break;
+        default:
+            connection.end();
+            break;
+    }
 }
+
 
 init();
