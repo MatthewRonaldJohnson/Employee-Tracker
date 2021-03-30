@@ -1,6 +1,4 @@
--- reference file for db commands, not meant to be run
-
--- commands used to create db and its tables
+DROP DATABASE IF EXISTS employee_db;
 
 CREATE DATABASE employee_db;
 
@@ -29,6 +27,7 @@ CREATE table employee (
     manager_id int
 );
 
+--reference commands 
 -- example command to add to the department table
 
 INSERT INTO department (name) VALUES (?);
