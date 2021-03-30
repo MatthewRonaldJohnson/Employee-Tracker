@@ -37,7 +37,6 @@ const viewEmployeeData = async function (connection) {
                 message: 'Which manager\'s employees do you want to view?',
                 choices: employeeData.map(element => ({name: element.name, value: element.id}))
             })
-            console.log(managerId)
             const employeeByManager = await connection.query("SELECT e.first_name, e.last_name, title, name AS department, salary, CONCAT (m.first_name, \" \", m.last_name) as manager FROM employee e LEFT JOIN role ON e.role_id = role.id LEFT JOIN department ON role.department_id = department.id LEFT JOIN employee m ON e.manager_id = m.id WHERE e.manager_id = ?;", [managerId]);
             console.table(employeeByManager)
             break;

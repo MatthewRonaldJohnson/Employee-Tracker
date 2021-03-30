@@ -51,11 +51,13 @@ const updateData = async function (connection) {
                 message: `Who is ${employee}'s new manager?`,
                 choices: employeeList
             }])
-            if (!newManagerId==='NULL') {
+            if (Number.isInteger(newManagerId)) {
                 connection.query("UPDATE employee SET manager_id = ? where id = ?;", [newManagerId, target.id])
+                console.log("Manager Set")
             }
             else {
                 connection.query("UPDATE employee SET manager_id = NULL where id = ?;", [target.id])
+                console.log("Manager set to NULL")
             }
             break;
     }
