@@ -54,7 +54,7 @@ const employeeQ = [
 ]
 
 const addData = async function (connection) {
-    await inquirer.prompt([{
+    const { table } = await inquirer.prompt([{
         type: "list",
         name: "table",
         message: "Which table do you want to add data to?",
@@ -65,59 +65,44 @@ const addData = async function (connection) {
             "Go back"
         ]
     }])
-        .then(async function (response) {
-            switch (response.table) {
-                case "Department":
-                    await inquirer.prompt(departmentQ)
-                        .then(async (response) => {
-                            const query = "INSERT INTO department (name) VALUES (?);";
-                            await connection.query(query, [response.name]);
-                            console.log(response.name + " department added to database");
-                        })
-                    break;
-                case "Role":
-                    let departmentData;
-                    await connection.query("SELECT * FROM department;")
-                        .then((data) => {
-                            roleQ[2].choices = data.map(element => element.name)
-                            departmentData = data;
-                        })
-                    await inquirer.prompt(roleQ)
-                        .then(async (response) => {
-                            let department_id = findId(departmentData, 'name', response.department);
-                            const query = "INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?);";
-                            await connection.query(query, [response.title, response.salary, department_id]);
-                            console.log(response.title + " role added to database");
-                        })
+    switch (table) {
+        case "Department":
+            const { name } = await inquirer.prompt(departmentQ)
+            const departmentQuery = "INSERT INTO department (name) VALUES (?);";
+            await connection.query(departmentQuery, [name]);
+            console.log(name + " department added to database");
+            break;
 
-                    break;
-                case "Employee":
-                    let roleData;
-                    let employeeData;
-                    await connection.query("SELECT title, id FROM role;")
-                        .then((data) => {
-                            employeeQ[2].choices = data.map(element => element.title);
-                            roleData = data;
-                        })
-                    await connection.query("SELECT CONCAT(first_name, ' ', last_name) AS name, id FROM employee;")
-                        .then((data) => {
-                            employeeQ[3].choices = data.map(element => element.name);
-                            employeeQ[3].choices.push('NULL')
-                            employeeData = data;
-                        })
-                    await inquirer.prompt(employeeQ)
-                        .then(async (response) => {
-                            let role_id = findId(roleData, 'title', response.role);
-                            let manager_id = findId(employeeData, 'name', response.manager);
-                            const query = "INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?);";
-                            await connection.query(query, [response.first_name, response.last_name, role_id, manager_id]);
-                            console.log(`${response.first_name} ${response.last_name} added to employee database`);
-                        })
+        case "Role":
+            const departmentData = await connection.query("SELECT * FROM department;")
+            roleQ[2].choices = departmentData.map(element => element.name)
+            const roleRes = await inquirer.prompt(roleQ)
+            let department_id = findId(departmentData, 'name', roleRes.department);
+            const roleQuery = "INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?);";
+            await connection.query(roleQuery, [roleRes.title, roleRes.salary, department_id]);
+            console.log(roleRes.title + " role added to database");
+            break;
+
+        case "Employee":
+            const roleData = await connection.query("SELECT title, id FROM role;")
+            employeeQ[2].choices = roleData.map(element => element.title);
+
+            const employeeData = await connection.query("SELECT CONCAT(first_name, ' ', last_name) AS name, id FROM employee;")
+            employeeQ[3].choices = employeeData.map(element => element.name);
+            employeeQ[3].choices.push('NULL')
+
+            const employeeRes = await inquirer.prompt(employeeQ)
+            let role_id = findId(roleData, 'title', employeeRes.role);
+            let manager_id = findId(employeeData, 'name', employeeRes.manager);
+
+            const employeeQuery = "INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?);";
+            await connection.query(employeeQuery, [employeeRes.first_name, employeeRes.last_name, role_id, manager_id]);
+            console.log(`${employeeRes.first_name} ${employeeRes.last_name} added to employee database`);
 
 
-                    break;
-            }
-        })
+            break;
+    }
+
 }
 
 module.exports = addData;
