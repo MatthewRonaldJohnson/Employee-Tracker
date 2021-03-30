@@ -13,23 +13,23 @@ const init = async function () {
         name: "action",
         message: "Which action would you like to take?",
         choices: [
-            "Add New Data",
-            "Update Existing Data",
             "View Data",
+            "Add New Data",
+            "Update an employee's Data",
             "Exit the Program"
         ]
     }])
     switch (action) {
+        case "View Data":
+            await viewData(connection);
+            init();
+            break;
         case "Add New Data":
             await addData(connection);
             init();
             break;
-        case "Update Existing Data":
+        case "Update an employee's Data":
             await updateData(connection);
-            init();
-            break;
-        case "View Data":
-            await viewData(connection);
             init();
             break;
         default:
