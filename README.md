@@ -10,11 +10,11 @@ A video demostrating how this program functions can be found [here](https://yout
 
 This program allows the user to view, add, and update data in a mysql database. Upon starting the program this screen will be shown. 
 
-![Start Screen](assets\img\Start-Screen.PNG)
+![Start Screen](https://raw.githubusercontent.com/MatthewRonaldJohnson/Employee-Tracker/main/assets/img/Start-Screen.PNG)
 
 From here the user can interact with the command line to select which action to talk. Below is an example of a user answering the prompts to view all employee data organized by department. 
 
-![Note Screen](assets\img\View-Data-View.PNG)
+![Note Screen](https://raw.githubusercontent.com/MatthewRonaldJohnson/Employee-Tracker/main/assets/img/View-Data-View.PNG)
 
 ## Running the Program
 
