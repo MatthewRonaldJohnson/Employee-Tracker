@@ -1,7 +1,5 @@
 const inquirer = require("inquirer");
 
-const findId = require('./findId')
-
 const updateData = async function (connection) {
     const employeeData = await connection.query("SELECT CONCAT(e.first_name, ' ', e.last_name) as name, title, e.id, CONCAT(m.first_name, ' ', m.last_name) as manager from employee e left join role on e.role_id = role.id left join employee m on e.manager_id = m.id;")
     const { employee, attribute } = await inquirer
@@ -59,40 +57,4 @@ const updateData = async function (connection) {
     }
 }
 
-
-
-
-
-
-
-
-
-
-// switch (table) {
-//     case 'Employee':
-
-
-
-//         const { employee } = await inquirer.prompt(employeeQ)
-//         let target;
-//         for (let i = 0; i < employeeData.length; i++) {
-//             if (employeeData[i].name === employee) target = employeeData[i];
-//         }
-//         console.log(`${target.name}'s current role is ${target.title}`);
-//         const roleData = await connection.query("SELECT title, id FROM role;")
-//         const { newRole } = await inquirer.prompt([{
-//             type: 'list',
-//             message: `What is ${target.name}'s new role?`,
-//             choices: roleData.map(element => element.title),
-//             name: 'newRole'
-//         }])
-//         let newRoleId = findId(roleData, 'title', newRole)
-//         const query = "UPDATE employee set role_id = ? WHERE id = ?;"
-//         await connection.query(query, [newRoleId, target.id]);
-//         console.log(`${target.name}'s role was updated.`)
-
-
-
-
 module.exports = updateData;
-

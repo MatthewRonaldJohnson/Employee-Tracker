@@ -3,6 +3,7 @@ const inquirer = require("inquirer");
 const addData = require('./utlis/addData')
 const viewData = require('./utlis/viewData')
 const updateData = require('./utlis/updateData')
+const deleteData = require('./utlis/deleteData')
 
 const connection = require('./utlis/connection')
 
@@ -16,6 +17,7 @@ const init = async function () {
             "View Data",
             "Add New Data",
             "Update an employee's Data",
+            "Delete Data",
             "Exit the Program"
         ]
     }])
@@ -30,6 +32,10 @@ const init = async function () {
             break;
         case "Update an employee's Data":
             await updateData(connection);
+            init();
+            break;
+        case "Delete Data":
+            await deleteData(connection);
             init();
             break;
         default:
