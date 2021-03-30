@@ -21,38 +21,42 @@ const updateData = async function (connection) {
                 ]
             },
         ])
-    let target; 
+    let target;
     for (let i = 0; i < employeeData.length; i++) {
         if (employeeData[i].name === employee) target = employeeData[i];
     }
-    switch (attribute){
+    switch (attribute) {
         case "Role":
             console.log(`${employee}'s role is currently ${target.title}`)
             const roleData = await connection.query("SELECT title, id FROM role;")
-            const {newRoleId} = await inquirer.prompt([{
+            const { newRoleId } = await inquirer.prompt([{
                 type: 'list',
                 name: 'newRoleId',
                 message: `What is ${employee}'s new role?`,
-                choices: roleData.map(element => ({name: element.title,value: element.id}))
+                choices: roleData.map(element => ({ name: element.title, value: element.id }))
             }])
             connection.query("UPDATE employee SET role_id = ? where id = ?;", [newRoleId, target.id])
             break;
         case "Manager":
-            if (target.manager){
+            if (target.manager) {
                 console.log(`${employee}'s manager is currently ${target.manager}`)
             } else {
                 console.log(`${employee}'s currently has no manager`)
             }
-            const employeeList = employeeData.map(element => ({name: element.name, value: element.id}))
-            employeeList.push({name: "None", value: 'NULL'})
-            const {newManagerId} = await inquirer.prompt([{
+            const employeeList = employeeData.map(element => ({ name: element.name, value: element.id }))
+            employeeList.push({ name: "None", value: 'NULL' })
+            const { newManagerId } = await inquirer.prompt([{
                 type: 'list',
                 name: 'newManagerId',
                 message: `Who is ${employee}'s new manager?`,
                 choices: employeeList
             }])
-            if (newManagerId) connection.query("UPDATE employee SET manager_id = ? where id = ?;", [newManagerId, target.id])
-            else connection.query("UPDATE employee SET manager_id = NULL where id = ?;", [target.id])
+            if (!newManagerId==='NULL') {
+                connection.query("UPDATE employee SET manager_id = ? where id = ?;", [newManagerId, target.id])
+            }
+            else {
+                connection.query("UPDATE employee SET manager_id = NULL where id = ?;", [target.id])
+            }
             break;
     }
 }

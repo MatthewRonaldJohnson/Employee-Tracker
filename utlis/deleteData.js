@@ -24,7 +24,6 @@ const deleteData = async function(connection){
                     value: element.id
                 }))
             })
-            console.log(employeeId);
             await connection.query('Delete From employee where id=?', [employeeId])
             console.log(`Removed from Database`)
             break;
