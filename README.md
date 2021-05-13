@@ -1,6 +1,6 @@
 # Employee Tracker Database
 
-Homework 12: Create a CLI for interacting with a mysql database that stores employee information. 
+CLI for interacting with a mysql database that stores employee information. 
 
 ## [Walkthrough Video](https://youtu.be/oIn2NTmTHZ8)
 
